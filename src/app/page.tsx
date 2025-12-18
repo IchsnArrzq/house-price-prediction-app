@@ -21,6 +21,8 @@ const MapSection = dynamic(() => import("./components/MapSection"), {
   ssr: false,
 });
 
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 export default function Home() {
   const [isLoading, setLoading] = useState<boolean>(false);
   const [form, setForm] = useState<Form>({
@@ -69,7 +71,7 @@ export default function Home() {
           params.append("city", form.city);
         }
         const res = await fetch(
-          `http://localhost:5000/api/locations?${params.toString()}`,
+          `${baseUrl}/api/locations?${params.toString()}`,
           { signal: controller.signal }
         );
         if (!res.ok) {
@@ -107,7 +109,7 @@ export default function Home() {
     });
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/predict", {
+      const res = await fetch(`${baseUrl}/api/predict`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
